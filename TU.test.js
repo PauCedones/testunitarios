@@ -132,7 +132,7 @@
 
  let lista_tareas =[];
 
-const validar_tareas = () => {
+const validar_tareas = (titulo, descripcion, tarea_check) => {
     // restringir para que sirve cada tipo
     
     if (typeof titulo != "string"){
@@ -141,12 +141,8 @@ const validar_tareas = () => {
     else if (typeof descripcion != "string"){
         throw "Esa no es una descripcion"
     }
-    else if (typeof tarea_check == "boolean"){
+    else if (typeof tarea_check != "boolean"){
         throw "Tarea no resuelta"
-    }
-    
-    else{
-        throw "problema tarea"
     }
   
 }
@@ -155,13 +151,12 @@ const validar_tareas = () => {
 
      //hacer un array de arrays
      // el sub array TAREA tiene que tener un TITULO, DESCRIPCION y un check de si esta lista o no
-     
-    validar_tareas();
 
     let tarea = [];
+    validar_tareas(titulo, descripcion, tarea_check);
     tarea.push(titulo,descripcion,tarea_check);
 
-    lista_tarea.push(tarea);
+    lista_tareas.push(tarea);
     return (lista_tareas);
 
  }
@@ -174,4 +169,88 @@ const validar_tareas = () => {
     expect (typeof lista_tareas[0][1]).toBe ("string");
     expect (typeof lista_tareas[0][2]).toBe ("boolean");
 
+ });
+
+ test ("saber que mi lista tiene 2 strings y un booleano", () => {
+    
+    getTarea("pis", "hacer pis", false);
+
+    expect (typeof lista_tareas[0][0]).toBe ("string");
+    expect (typeof lista_tareas[0][1]).toBe ("string");
+    expect (typeof lista_tareas[0][2]).toBe ("boolean");
+
+ });
+
+ // Me tiene que permitir agregar tareas,
+ //editar y eliminar.
+
+ const eliminar_tarea = (titulo) =>{
+     //eliminar una tarea
+
+     for (let i=0 ; i < lista_tareas.length; i++){
+         if(lista_tareas[i][0]==titulo){
+             lista_tareas.splice(i,1);
+         }
+
+     }
+     return(lista_tareas);
+
+ }
+
+ test ("agregar una tarea nueva a mi lista", () => {
+    
+    getTarea("pedo", "tirarse un pedo", true);
+    getTarea("diarrea", "pedo con fruta", true);
+    getTarea("erupto", "tirarse un erupto", false);
+
+    expect (lista_tareas.length).toBe (3);
+    
+
+ });
+
+ test ("Eliminar el elemento diarrea", () => {
+    
+    getTarea("pedo", "tirarse un pedo", true);
+    getTarea("diarrea", "pedo con fruta", true);
+    getTarea("erupto", "tirarse un erupto", false);
+
+    eliminar_tarea("diarrea");
+
+    expect (lista_tareas.length).toBe (2);
+    
+
+ });
+
+ const editar_tarea =(editar)=>{
+     //buscar tarea para luego editar
+     //eliminar lo que no va
+    //rellenar en el espacio vacio
+     //editar una tarea 
+
+    for (let i=0 ; i < lista_tareas.length; i++){
+            editar = lista_tareas[i][0].find(editar);
+            eliminar_tarea(editar);
+            getTarea(editar);
+    }
+    return(lista_tareas);
+}
+ 
+
+ test ("Editar el elemento diarrea",() => {
+
+    getTarea("pedo", "tirarse un pedo", true);
+    getTarea("diarrea", "pedo con fruta", true);
+    getTarea("erupto", "tirarse un erupto", false);
+
+    editar_tarea("descompostura","caca liquida", false);
+
+    expect ("descompostura").toMatch(/descompostura/);
+
+ });
+
+
+
+ afterEach(()=>{
+     lista_tareas=[];
+     console.log("funciono el after each");
  });
