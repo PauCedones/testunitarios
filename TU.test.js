@@ -132,15 +132,23 @@
 
  let lista_tareas =[];
 
-const validar_tareas = () =>{
+const validar_tareas = () => {
     // restringir para que sirve cada tipo
-if (typeof titulo != "string"){
-    throw "titulo es cualquier cosa"
+    
+    if (typeof titulo != "string"){
+        throw "titulo es cualquier cosa"
+        }
+    else if (typeof descripcion != "string"){
+        throw "Esa no es una descripcion"
+    }
+    else if (typeof tarea_check == "boolean"){
+        throw "Tarea no resuelta"
     }
     
-    typeof descripcion == "string";
-    typeof tarea_check == "boolean";
-
+    else{
+        throw "problema tarea"
+    }
+  
 }
 
  const getTarea = (titulo, descripcion, tarea_check) => {
@@ -162,8 +170,8 @@ if (typeof titulo != "string"){
     
     getTarea("caca", "hacer caca", true);
 
-    expect (lista_tareas[0][0]).toBe (typeof string);
-    expect (lista_tareas[0][1]).toBe ("string);
+    expect (typeof lista_tareas[0][0]).toBe ("string");
+    expect (typeof lista_tareas[0][1]).toBe ("string");
     expect (typeof lista_tareas[0][2]).toBe ("boolean");
 
  });
