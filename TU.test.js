@@ -221,18 +221,18 @@ const validar_tareas = (titulo, descripcion, tarea_check) => {
 
  });
 
- const editar_tarea =(editar)=>{
-     //buscar tarea para luego editar
-     //eliminar lo que no va
-    //rellenar en el espacio vacio
-     //editar una tarea 
+ const editar_tarea =(titulo,n_titulo,n_descripcion,n_check)=>{
+    //map busca y reempleza, no necesitas hacer mas nada
 
-    for (let i=0 ; i < lista_tareas.length; i++){
-            editar = lista_tareas[i][0].find(editar);
-            eliminar_tarea(editar);
-            getTarea(editar);
-    }
-    return(lista_tareas);
+    let buscar = lista_tareas.map((tarea) => {
+        if(titulo == tarea[0] ){
+         tarea[0] = n_titulo;
+         tarea[1] = n_descripcion;
+         tarea[2] = n_check;   
+        }
+    });
+     return buscar;
+ 
 }
  
 
@@ -242,11 +242,37 @@ const validar_tareas = (titulo, descripcion, tarea_check) => {
     getTarea("diarrea", "pedo con fruta", true);
     getTarea("erupto", "tirarse un erupto", false);
 
-    editar_tarea("descompostura","caca liquida", false);
+    editar_tarea("pedo", "descompostura","caca liquida", false);
 
-    expect ("descompostura").toMatch(/descompostura/);
+    expect (lista_tareas[0][0]).toMatch(/descompostura/);
 
  });
+
+ /*
+ * Además debería poder listar
+ * las tareas permitiendome filtrar por
+ * si fueron resueltas o no, pero sin ser obligatorio.
+ */
+
+const filtrar_tareas = (tarea_check) => {
+
+    let buscar = lista_tareas.filter(tarea=>tarea[2] == tarea_check);
+    
+    return buscar.length;
+
+}
+
+test ("Filtrar todas mis tareas realizadas",() => {
+
+    getTarea("pedo", "tirarse un pedo", true);
+    getTarea("diarrea", "pedo con fruta", true);
+    getTarea("erupto", "tirarse un erupto", false);
+
+    expect (filtrar_tareas(true)).toBe(2);
+
+ });
+
+
 
 
 
