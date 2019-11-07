@@ -256,9 +256,14 @@ const validar_tareas = (titulo, descripcion, tarea_check) => {
 
 const filtrar_tareas = (tarea_check) => {
 
-    let buscar = lista_tareas.filter(tarea=>tarea[2] == tarea_check);
+    if( tarea_check!=undefined){
+        let buscar = lista_tareas.filter(tarea => tarea [2] == tarea_check);
+        return buscar;
+    }
     
-    return buscar.length;
+    return lista_tareas;
+
+    
 
 }
 
@@ -268,7 +273,12 @@ test ("Filtrar todas mis tareas realizadas",() => {
     getTarea("diarrea", "pedo con fruta", true);
     getTarea("erupto", "tirarse un erupto", false);
 
-    expect (filtrar_tareas(true)).toBe(2);
+    expect (filtrar_tareas(true)).toStrictEqual([
+        ["pedo", "tirarse un pedo", true],
+        ["diarrea", "pedo con fruta", true],
+    ]);
+
+    expect (filtrar_tareas()).toStrictEqual(lista_tareas);
 
  });
 
